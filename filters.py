@@ -1,3 +1,6 @@
+def identity(img = None):
+    return img
+
 def grey_scale(img = None):
     if img.any():
         height, width, channels = img.shape
@@ -39,7 +42,7 @@ def brightness(img = None, brightness = 127):
         return img
     return None
 
-def one_channel(img = None, channel):
+def one_channel(img = None, channel = 'R'):
     if img.any():
         if channel not in ["R","G","B"]:
             return None

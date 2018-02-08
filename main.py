@@ -1,6 +1,7 @@
 from Tkinter import *
 from PIL import ImageTk, Image
 import utils
+import filters
 
 def main():
     w = Tk()
@@ -21,12 +22,26 @@ def main():
 
 
 
-    path = 'image.jpg'
+    path = 'images/image3.jpg'
 
     img = ImageTk.PhotoImage(Image.open(path))
 
+    img_cv2 = utils.read_image(path)
+
     panel = Label(w, image=img)
-    panel2 = Label(w, image=img)
+
+    # img2_cv2 = filters.grey_scale(img = img_cv2)
+    # img2_cv2 = filters.brightness(img = img_cv2, brightness=50)
+    img2_cv2 = filters.one_channel(img = img_cv2, channel = 'G')
+    # img2_cv2 = filters.high_contrast(img = img_cv2)
+    # img2_cv2 = filters.identity(img = img_cv2)
+
+    img2_cv2 = utils.swap_rgb(img2_cv2)
+
+    img2 = Image.fromarray(img2_cv2)
+    img2 = ImageTk.PhotoImage(img2)
+
+    panel2 = Label(w, image=img2)
 
     panel.pack(side = "left")
 
