@@ -1,8 +1,18 @@
-import cv2
-import utils
-import filters
+import Tkinter as tk
+from PIL import ImageTk, Image
+import time
 
-img = utils.read_image()
-img = filters.high_contrast(img)
-cv2.imshow('image',img)
-cv2.waitKey(0)
+
+root = tk.Tk()
+
+img = ImageTk.PhotoImage(Image.open("images/image.jpg"))
+panel = tk.Label(root)
+panel.pack(side="bottom", fill="both", expand="yes")
+
+def callback(e):
+    img2 = ImageTk.PhotoImage(Image.open('images/image3.jpg'))
+    panel.configure(image=img2)
+    panel.image = img2
+
+root.bind("<Return>", callback)
+root.mainloop()

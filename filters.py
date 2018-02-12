@@ -1,18 +1,24 @@
-def identity(img = None):
+def identity(img = None, extras = {}):
     return img
 
-def grey_scale(img = None):
+def grey_scale(img = None, extras = {}):
+    print '1grey_scale'
     if img.any():
+        print '2haygrey_scale'
         height, width, channels = img.shape
         for i in range(0, height):
             for j in range(0,width):
                 grey = (int(img[i,j][0]) + int(img[i,j][1]) + int(img[i,j][2])) / 3
                 img[i,j] = [grey,grey,grey]
         return img
+    print '3nohaygrey_scale'
     return None
 
-def brightness(img = None, brightness = 127):
+def brightness(img = None, extras = {}):#, brightness = 127):
+    print '1brightness'
     if img.any():
+        print '2haybrightness'
+        brightness = extras.get("brightness")
         height, width, channels = img.shape
         for i in range(0, height):
             for j in range(0,width):
@@ -40,10 +46,14 @@ def brightness(img = None, brightness = 127):
 
                 img[i,j] = [new_b,new_g,new_r]
         return img
+    print '3nohaybrightness'
     return None
 
-def one_channel(img = None, channel = 'R'):
+def one_channel(img = None, extras = {}):#, channel = 'R'):
+    print '1one_channel'
     if img.any():
+        print '2hayone_channel'
+        channel = extras.get('channel')
         if channel not in ["R","G","B"]:
             return None
         height, width, channels = img.shape
@@ -62,10 +72,13 @@ def one_channel(img = None, channel = 'R'):
                 for j in range(0,width):
                     img[i,j] = [img[i,j][0],0,0]
             return img
+    print '3nohayone_channel'
     return None
 
-def high_contrast(img = None):
+def high_contrast(img = None, extras = {}):
+    print '1high_contrast'
     if img.any():
+        print '2hayhigh_contrast'
         height, width, channels = img.shape
         for i in range(0, height):
             for j in range(0,width):
@@ -74,4 +87,5 @@ def high_contrast(img = None):
                 r = 0 if int(img[i,j][2]) <= 127 else 255
                 img[i,j] = [b,g,r]
         return img
+    print '3nohayhigh_contrast'
     return None

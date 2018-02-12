@@ -1,51 +1,79 @@
 from Tkinter import *
+from tkFileDialog import askopenfilename
 from PIL import ImageTk, Image
 import utils
 import filters
 
+original_PIL = None
+original_CV2 = None
+panel2 = None
+
+def reload_filtered_img(w, filter_to_apply, extras):
+    cp_original_CV2 = original_CV2
+    if cp_original_CV2.any():
+        print 'aun hay original'
+
+    filtered_img = getattr(filters, filter_to_apply)(img = cp_original_CV2, extras = extras)
+    if filtered_img.any():
+        filtered_img = cv2_to_PIL(filtered_img)
+        panel2.configure(image=filtered_img)
+        panel2.image = filtered_img
+    else:
+        print 'no hay pic'
+
+def load_image(w):
+    f = askopenfilename()
+    original_img = utils.read_image(f)
+
+    global original_CV2
+    original_CV2 = original_img
+
+    original_img = cv2_to_PIL(original_img)
+
+    global original_PIL
+    original_PIL = original_img
+
+    panel = Label(w, image=original_img)
+    panel.pack(side="left")
+
+def cv2_to_PIL(cv2_img):
+    if cv2_img.any():
+        cv2_img = utils.swap_rgb(cv2_img)
+        cv2_img = Image.fromarray(cv2_img)
+        cv2_img = ImageTk.PhotoImage(cv2_img)
+    return cv2_img
+
 def main():
+
     w = Tk()
     w.title("filtros")
     w.geometry("1280x720")
-    w.configure(background='grey')
+    w.configure(background='black')
+
+    global panel2
+    panel2 = Label(w)
+    panel2.pack(side='right')
 
     menu_bar = Menu(w)
 
     file_menu = Menu(menu_bar, tearoff=0)
-    file_menu.add_command(label = "Cargar imagen.")
+    file_menu.add_command(label = "Cargar imagen.", command=lambda : load_image(w))
     file_menu.add_command(label = "Guardar imagen.")
     file_menu.add_command(label = "Salir.", command = w.quit)
 
     menu_bar.add_cascade(label="File", menu=file_menu)
 
+    filters_menu = Menu(menu_bar, tearoff=0)
+    filters_menu.add_command(label = "Escala de grises.", command = lambda : reload_filtered_img(w, "grey_scale", {}))
+    filters_menu.add_command(label = "Brillo.", command = lambda : reload_filtered_img(w, "brightness", {"brightness":127}))
+    filters_menu.add_command(label = "Rojo", command = lambda : reload_filtered_img(w, "one_channel", {'channel':'R'}))
+    filters_menu.add_command(label = "Verde", command = lambda : reload_filtered_img(w, "one_channel", {'channel':'G'}))
+    filters_menu.add_command(label = "Azul", command = lambda : reload_filtered_img(w, "one_channel", {'channel':'B'}))
+    filters_menu.add_command(label = "Alto contraste", command = lambda : reload_filtered_img(w, "high_contrast", {}))
+
+    menu_bar.add_cascade(label="Filtros", menu=filters_menu)
+
     w.config(menu=menu_bar)
-
-
-
-    path = 'images/image3.jpg'
-
-    img = ImageTk.PhotoImage(Image.open(path))
-
-    img_cv2 = utils.read_image(path)
-
-    panel = Label(w, image=img)
-
-    # img2_cv2 = filters.grey_scale(img = img_cv2)
-    # img2_cv2 = filters.brightness(img = img_cv2, brightness=50)
-    img2_cv2 = filters.one_channel(img = img_cv2, channel = 'G')
-    # img2_cv2 = filters.high_contrast(img = img_cv2)
-    # img2_cv2 = filters.identity(img = img_cv2)
-
-    img2_cv2 = utils.swap_rgb(img2_cv2)
-
-    img2 = Image.fromarray(img2_cv2)
-    img2 = ImageTk.PhotoImage(img2)
-
-    panel2 = Label(w, image=img2)
-
-    panel.pack(side = "left")
-
-    panel2.pack(side = "right")
 
     w.mainloop()
 

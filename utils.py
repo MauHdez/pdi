@@ -13,3 +13,6 @@ def swap_rgb(img = None):
     if img.any():
         return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return None
+
+# def open_image():
+#     return filedialog.askopenfilename()
