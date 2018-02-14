@@ -9,11 +9,11 @@ original_CV2 = None
 panel2 = None
 
 def reload_filtered_img(w, filter_to_apply, extras):
-    cp_original_CV2 = original_CV2
-    if cp_original_CV2.any():
-        print 'aun hay original'
 
-    filtered_img = getattr(filters, filter_to_apply)(img = cp_original_CV2, extras = extras)
+    fil = getattr(filters, filter_to_apply)
+    filtered_img = fil(original_img = original_CV2, extras = extras)
+    print 'filtered_img: ',filtered_img
+    print 'original_CV2: ',original_CV2
     if filtered_img.any():
         filtered_img = cv2_to_PIL(filtered_img)
         panel2.configure(image=filtered_img)
@@ -23,15 +23,20 @@ def reload_filtered_img(w, filter_to_apply, extras):
 
 def load_image(w):
     f = askopenfilename()
+    print 'f: ', f
     original_img = utils.read_image(f)
 
     global original_CV2
     original_CV2 = original_img
 
+    print 'original_CV2: ',original_CV2
+
     original_img = cv2_to_PIL(original_img)
 
     global original_PIL
     original_PIL = original_img
+
+
 
     panel = Label(w, image=original_img)
     panel.pack(side="left")
@@ -48,7 +53,7 @@ def main():
     w = Tk()
     w.title("filtros")
     w.geometry("1280x720")
-    w.configure(background='black')
+    w.configure(background='gray')
 
     global panel2
     panel2 = Label(w)
@@ -69,7 +74,9 @@ def main():
     filters_menu.add_command(label = "Rojo", command = lambda : reload_filtered_img(w, "one_channel", {'channel':'R'}))
     filters_menu.add_command(label = "Verde", command = lambda : reload_filtered_img(w, "one_channel", {'channel':'G'}))
     filters_menu.add_command(label = "Azul", command = lambda : reload_filtered_img(w, "one_channel", {'channel':'B'}))
-    filters_menu.add_command(label = "Alto contraste", command = lambda : reload_filtered_img(w, "high_contrast", {}))
+    filters_menu.add_command(label = "Alto contraste", command = lambda : reload_filtered_img(w, "high_contrast", {'morsa':True}))
+    filters_menu.add_command(label = "Alto contraste no morsa", command = lambda : reload_filtered_img(w, "high_contrast", {}))
+    filters_menu.add_command(label = "Inveso", command = lambda : reload_filtered_img(w, "inverse", {}))
 
     menu_bar.add_cascade(label="Filtros", menu=filters_menu)
 
