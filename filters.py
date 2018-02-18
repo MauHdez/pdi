@@ -1,3 +1,6 @@
+import utils
+from PIL import Image
+
 def identity(original_img=None, extras={}):
     img = original_img.copy()
     return img
@@ -115,14 +118,27 @@ def inverse(original_img=None, extras={}):
                 img[i,j] = [new_b,new_g,new_r]
         return img
     return None
-# 
-# def mosaico(original_img=None, extras={}):
-#     img = original_img.copy()
-#     if img.any():
-#         height, width, channels = img.shape
-#         for i in range(0, height):
-#             for j in range(0,width):
-#                 if i < height-3 and j < width-3:
-#
-#         return img
-#     return None
+
+def mosaico(original_img=None, extras={'size':25}):
+    p_size = extras.get('size')
+    img = original_img.copy()
+    img = utils.toImage(img)
+    # img = original_img.copy()
+    img = img.resize( (int(img.size[0]/p_size), int(img.size[1]/p_size)), Image.NEAREST)
+    img = img.resize((img.size[0]*p_size, img.size[1]*p_size), Image.NEAREST)
+    img = utils.toCV2(img)
+    return img
+
+def rgb_component(original_img=None, extras={}):
+    extras.update(utils.rgb_component_aux())
+    r = extras.get('r')
+    g = extras.get('g')
+    b = extras.get('b')
+    img = original_img.copy()
+    if img.any():
+        height, width, channels = img.shape
+        for i in range(0, height):
+            for j in range(0,width):
+                img[i,j] = [b,g,r]
+        return img
+    return None

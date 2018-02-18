@@ -3,6 +3,13 @@ Repositorio para la materia de Proceso digital de imágenes
 
 ----------------------------------------------------------
 
+          DISCLAIMER
+
+Probado y desarrollado en Ubuntu 16.04 LTS
+
+
+----------------------------------------------------------
+
           RECURSOS
 
 sudo apt install python-tk
