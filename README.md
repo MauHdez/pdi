@@ -7,6 +7,8 @@ Repositorio para la materia de Proceso digital de imágenes
 
 Probado y desarrollado en Ubuntu 16.04 LTS
 
+Debes relanzar el programa para cargar una nueva imagen, necesita arreglo.
+
 
 ----------------------------------------------------------
 

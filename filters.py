@@ -123,7 +123,6 @@ def mosaico(original_img=None, extras={'size':25}):
     p_size = extras.get('size')
     img = original_img.copy()
     img = utils.toImage(img)
-    # img = original_img.copy()
     img = img.resize( (int(img.size[0]/p_size), int(img.size[1]/p_size)), Image.NEAREST)
     img = img.resize((img.size[0]*p_size, img.size[1]*p_size), Image.NEAREST)
     img = utils.toCV2(img)
@@ -142,3 +141,48 @@ def rgb_component(original_img=None, extras={}):
                 img[i,j] = [b,g,r]
         return img
     return None
+
+def quitar_marca_de_agua(original_img=None, extras={}):
+    img = original_img.copy()
+    if img.any():
+        high_contrast_image = high_contrast(img, extras)
+        grey_scale_image = grey_scale(img, extras)
+        height, width, channels = img.shape
+        for i in range(0, height):
+            for j in range(0,width):
+                b = int(img[i,j][0])
+                g = int(img[i,j][1])
+                r = int(img[i,j][2])
+                if r > g + 10 and r > b + 10:
+                    pix_grey = grey_scale_image[i,j]
+                    pix_hc = high_contrast_image[i,j]
+                    if (pix_grey[0] < pix_hc[0] and
+                       pix_grey[1] < pix_hc[1] and
+                       pix_grey[2] < pix_hc[2]):
+                        img[i,j] = pix_hc
+                    else:
+                        img[i,j] = pix_grey
+        return img
+    return None
+
+def m_a_color(original_img=None, extras={}):
+    img = original_img.copy()
+    mos_img = mosaico(img)
+    html = utils.write_html(mos_img)
+    print html
+    # exit(0)
+    return mos_img
+
+def att(original_img=None, extras={'morsa':True}):
+    img = original_img.copy()
+    if img.any():
+        img = high_contrast(img, extras) #Pasamos a blanco y negro
+        height, width, channels = img.shape
+        for i in range(0, width):
+            for j in range(0, height, 9): #Recorremos de 9 pixeles en 9 pixeles a lo largo
+                p1, p2, p3 = img[i,j], img[i,j + 1], img[i,j + 2]
+                p4, p5, p6 = img[i,j + 3], img[i,j + 4], img[i,j + 5]
+                p7, p8, p9 = img[i,j + 6], img[i,j + 7], img[i,j + 8]
+
+                print p1,p2,p3,p4,p5,p6,p7,p8,p9
+                exit()

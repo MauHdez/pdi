@@ -20,6 +20,11 @@ def reload_filtered_img(w, filter_to_apply, extras):
 def load_image(w):
     try:
         f = askopenfilename()
+
+        # if original_CV2 is not None:
+        #     original_CV2 = None
+        #     original_PIL = None
+
         original_img = utils.read_image(f)
 
         global original_CV2
@@ -43,7 +48,7 @@ def main():
     w = Tk()
     w.title("filtros")
     w.geometry("1280x720")
-    w.configure(background='gray')
+    w.configure(background='white')
 
     global panel2
     panel2 = Label(w)
@@ -59,36 +64,66 @@ def main():
     menu_bar.add_cascade(label="File", menu=file_menu)
 
     filters_menu = Menu(menu_bar, tearoff=0)
-    filters_menu.add_command(label = "Escala de grises.",
+
+    # Filtros de la tarea 1
+    tarea_uno_menu = Menu(filters_menu)
+
+    tarea_uno_menu.add_command(label = "Escala de grises.",
                              command = lambda : reload_filtered_img(w,
                                                             "grey_scale", {}))
-    filters_menu.add_command(label = "Brillo.",
+    tarea_uno_menu.add_command(label = "Brillo.",
                              command = lambda : reload_filtered_img(w,
                                             "brightness", {"brightness":127}))
-    filters_menu.add_command(label = "Rojo",
+    tarea_uno_menu.add_command(label = "Rojo",
                              command = lambda : reload_filtered_img(w,
                                             "one_channel", {'channel':'R'}))
-    filters_menu.add_command(label = "Verde",
+    tarea_uno_menu.add_command(label = "Verde",
                              command = lambda : reload_filtered_img(w,
                                                 "one_channel", {'channel':'G'}))
-    filters_menu.add_command(label = "Azul",
+    tarea_uno_menu.add_command(label = "Azul",
                              command = lambda : reload_filtered_img(w,
                                                 "one_channel", {'channel':'B'}))
-    filters_menu.add_command(label = "Alto contraste",
+    tarea_uno_menu.add_command(label = "Alto contraste",
                              command = lambda : reload_filtered_img(w,
                                             "high_contrast", {'morsa':True}))
-    filters_menu.add_command(label = "Alto contraste no morsa",
+    tarea_uno_menu.add_command(label = "Alto contraste no morsa",
                              command = lambda : reload_filtered_img(w,
                                                         "high_contrast", {}))
-    filters_menu.add_command(label = "Inveso",
+    tarea_uno_menu.add_command(label = "Inveso",
                              command = lambda : reload_filtered_img(w,
                                                                 "inverse", {}))
-    filters_menu.add_command(label = "Mosaico",
+    tarea_uno_menu.add_command(label = "Mosaico",
                              command = lambda : reload_filtered_img(w,
-                                                        "mosaico", {'size':25}))
-    filters_menu.add_command(label = "Componente RGB",
+                                                        "mosaico", {'size':10}))
+    tarea_uno_menu.add_command(label = "Componente RGB",
                              command = lambda : reload_filtered_img(w,
                                                 "rgb_component", {}))
+
+    # Filtro de la tarea 3
+    tarea_tres_menu = Menu(filters_menu)
+
+
+    tarea_tres_menu.add_command(label = "Quitar marca de agua",
+                             command = lambda : reload_filtered_img(w,
+                                                "quitar_marca_de_agua", {}))
+
+    # Filtros tarea 4
+    tarea_cuatro_menu = Menu(filters_menu)
+
+    tarea_cuatro_menu.add_command(label = "M a color",
+                             command = lambda : reload_filtered_img(w,
+                                                "m_a_color", {}))
+    # Filtros tarea 4
+    tarea_cinco_menu = Menu(filters_menu)
+
+    tarea_cinco_menu.add_command(label = "AT&T",
+                             command = lambda : reload_filtered_img(w,
+                                                "att", {}))
+
+
+    filters_menu.add_cascade(label="Tarea 1", menu=tarea_uno_menu)
+    filters_menu.add_cascade(label="Tarea 3", menu=tarea_tres_menu)
+    filters_menu.add_cascade(label="Tarea 4", menu=tarea_cuatro_menu)
 
     menu_bar.add_cascade(label="Filtros", menu=filters_menu)
 

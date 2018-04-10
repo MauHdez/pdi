@@ -67,5 +67,34 @@ def rgb_component_aux():
 
     get_rgb()
 
+# def map_to_letter():
+
+def write_html(original_img):
+    TEMPLATE = """<!DOCTYPE html>
+<html>
+<head>
+<title>Proceso Digital de Imagenes</title>
+</head>
+<body>
+{}
+</body>
+</html>"""
+
+    img = original_img.copy()
+    if img.any():
+        body = ''' '''
+        height, width, channels = img.shape
+        for i in xrange(0, height, 25):
+            for j in xrange(0,width, 25):
+                r = img[i,j][2]
+                g = img[i,j][1]
+                b = img[i,j][0]
+                m = '<font color="rgb({},{},{})">M</font>'.format(r,g,b)
+                body += m
+            body += '<br>'
+        return TEMPLATE.format(body)
+    return None
+
+
 # def open_image():
 #     return filedialog.askopenfilename()
