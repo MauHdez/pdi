@@ -1,31 +1,22 @@
-# pdi
-Repositorio para la materia de Proceso digital de imágenes
+# Digital image processing
+
+Image filter miscellanea
 
 ----------------------------------------------------------
 
-          DISCLAIMER
-
-Probado y desarrollado en Ubuntu 16.04 LTS
-
-Debes relanzar el programa para cargar una nueva imagen, necesita arreglo.
-
+NOTE: It needs fix; You need to relaunch the program to load a new image.
 
 ----------------------------------------------------------
-
-          RECURSOS
-
+### Install
+```
 sudo apt install python-tk
-
 sudo python2.7 -m pip install numpy
-
 sudo python2.7 -m pip install matplotlib
-
 sudo python2.7 -m pip install opencv-python
-
 sudo python2.7 -m pip install Pillow
-
+```
 ----------------------------------------------------------
-
-          EJECUCION
-
+### Execution
+```
 python main.py
+```
